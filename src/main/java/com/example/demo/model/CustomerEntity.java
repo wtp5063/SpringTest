@@ -5,6 +5,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import com.example.demo.common.validation.DuplicateCheck;
+import com.example.demo.common.validation.InsertGroup;
 import com.example.demo.common.validation.order.ValidGroup1;
 import com.example.demo.common.validation.order.ValidGroup2;
 
@@ -35,7 +36,7 @@ public class CustomerEntity
      */
     @NotBlank(groups = ValidGroup1.class)
     @Size(min = 0, max = 255, groups = ValidGroup2.class)
-    @DuplicateCheck(groups = ValidGroup2.class)
+    @DuplicateCheck(groups = InsertGroup.class)
     private String email;
 
     /**

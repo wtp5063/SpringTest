@@ -2,6 +2,9 @@ package com.example.demo.controller;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.demo.common.security.LoginUser;
 import com.example.demo.model.CustomerEntity;
 import com.example.demo.service.CustomerUpsertConfirmService;
 
@@ -92,6 +96,9 @@ public class CustomerUpsertConfirmController
         {
             redirect.addFlashAttribute("msg", "登録に失敗しました");
         }
+        SecurityContext context = SecurityContextHolder.getContext();
+        LoginUser user = new LoginUser(entity);
+        context.setAuthentication(new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities()));
         return "redirect:/customer_information";
     }
 }

@@ -9,6 +9,7 @@
         <span th:text="${error.message}"></span>
       </li>
     </ul>
+    <input type="hidden" name="id" th:value="${session['entity'].id}">
       <div>
         <label for="name">お名前</label>
         <input type="text" name="name" id="name" th:value="${session['entity'].name}">
@@ -38,6 +39,7 @@
       </div>
       <input type="submit" th:value="${session['entity'].id} == 0 ? '登録' : '編集'">
     </form>
+      <a th:href="@{/customer/delete(id=${session['entity'].id})}" th:if="${session['entity'].id} != 0"><input type="button" value="退会" onClick="return confirm('ユーザー情報を削除しても宜しいですか？')"></a>
   </section>
 </div>
 </html>

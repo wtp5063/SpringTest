@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="main">
+<form th:action="@{/job/upsert}" method="get">
+<input type="hidden" name="id" th:value="${#authentication.principal.entity.id}">
+<input type="submit" value="求人情報を作成する">
+</form>
+</div>
+</html>

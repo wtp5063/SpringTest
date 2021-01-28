@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="main">
+  <h2>プロフィール</h2>
+  <table>
+    <tr>
+      <th>名前</th>
+      <td>[[${user.name}]]</td>
+    </tr>
+    <tr>
+      <th>メールアドレス</th>
+      <td>[[${user.email}]]</td>
+    </tr>
+    <tr>
+      <th>住所</th>
+      <td>[[${user.address}]]</td>
+    </tr>
+    <tr>
+      <th>電話番号</th>
+      <td>[[${user.tel}]]</td>
+    </tr>
+  </table>
+  <form th:action="@{/customer/upsert}" method="get">
+    <input type="hidden" name="id" th:value="${user.id}">
+    <input type="hidden" name="name" th:value="${user.name}">
+    <input type="hidden" name="email" th:value="${user.email}">
+    <input type="hidden" name="address" th:value="${user.address}">
+    <input type="hidden" name="tel" th:value="${user.tel}">
+    <input type="hidden" name="role" th:value="${user.role}">
+    <input type="submit" value="プロフィール編集">
+  </form>
+</div>
+</html>
