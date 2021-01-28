@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<meta charset="UTF-8">
+<title th:text="${title}?:_">Insert title here</title>
+</head>
+<body>
+  <header>
+    <h1>SpringTest</h1>
+    <nav>
+      <ul>
+        <li sec:authorize="!isAuthenticated()"><a href="/">ホーム</a></li>
+        <li sec:authorize="hasRole('ROLE_SEEKER')"><a  href="/">ホーム</a></li>
+        <li sec:authorize="hasRole('ROLE_EMPLOYER')"><a href="/company">ホーム</a></li>
+        <li sec:authorize="!isAuthenticated()"><a href="/login">ログイン</a></li>
+        <li sec:authorize="isAuthenticated()"><a href="customer_information">会員情報</a></li>
+        <li sec:authorize="hasRole('ROLE_SEEKER')"><a href="/">応募一覧</a></li>
+        <li sec:authorize="hasRole('ROLE_EMPLOYER')"><a href="/">応募一覧</a></li>
+        <li sec:authorize="isAuthenticated()"><a href="/logout">ログアウト</a></li>
+      </ul>
+    </nav>
+    <hr>
+  </header>
+  <main>
+    <div th:include="__${main}__"></div>
+  </main>
+  <footer>
+    <hr>
+    <p>&copy;2021 SpringTest</p>
+  </footer>
+</body>
+</html>
