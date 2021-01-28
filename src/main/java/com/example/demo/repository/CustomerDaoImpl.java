@@ -13,7 +13,7 @@ import com.example.demo.model.CustomerEntity;
 import lombok.RequiredArgsConstructor;
 
 /**
- * customer(ユーザー情報)テーブルのDao interfaceの実装クラス。
+ * customer(ユーザー情報)テーブルのDao実装クラス。
  * @author tanakamasato
  * @since 2021/01/26
  */
@@ -21,6 +21,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CustomerDaoImpl implements CustomerDao
 {
+    /**
+     * データアクセス処理を行うテンプレート。
+     */
     private final JdbcTemplate jdbc;
 
     /**
@@ -38,7 +41,7 @@ public class CustomerDaoImpl implements CustomerDao
     }
 
     /**
-     * 受け取ったidと一致するレコードを取得し、インスタンスに格納して返す。
+     * 受け取ったidと一致するレコードを取得し、Entityに格納して返す。
      * @param id customer(ユーザー情報)テーブルのプライマリキー。
      * @return customer(ユーザー情報)テーブルのEntity class。
      */
@@ -65,7 +68,7 @@ public class CustomerDaoImpl implements CustomerDao
     }
 
     /**
-     * 受け取ったメールアドレスと一致するレコードを取得し、インスタンスに格納して返す。
+     * 受け取ったメールアドレスと一致するレコードを取得し、Entityに格納して返す。
      * @param email メールアドレス。
      * @return customer(ユーザー情報)テーブルのEntity class。
      */
@@ -92,7 +95,7 @@ public class CustomerDaoImpl implements CustomerDao
     }
 
     /**
-     * 受け取ったEntity classに格納されたidと一致するレコードを格納されたデータで上書きする。
+     * 受け取ったEntityに格納されたidと一致するレコードを格納されたデータで上書きする。
      * @param entity customer(ユーザー情報)テーブルのプライマリキー。
      * @return 成功時：true、失敗時：false。
      */

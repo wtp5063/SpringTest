@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="main">
+  <section>
+    <h2>求人情報[[${entity.id} == 0 ? '登録' : '編集']]</h2>
+    <form th:action="@{/job/upsert}" method="post" th:object="${entity}">
+      <ul>
+        <li th:each="error:${#fields.detailedErrors()}">
+          <span th:text="${error.message}"></span>
+        </li>
+      </ul>
+      <input type="hidden" name="id" th:value="${entity.id}">
+      <input type="hidden" name="customer_id" th:value="${#authentication.principal.entity.id}">
+      <div>
+        <label for="title">タイトル</label>
+        <input type="text" name="title" id="title" th:value="${entity.title}">
+      </div>
+      <div>
+        <label for="company">会社名</label>
+        <input type="text" name="company" id="company" th:value="${entity.company}">
+      </div>
+      <div>
+        <label for="min_salary">給与(最低)</label>
+        <input type="number" name="min_salary" id="min_salary" th:value="${entity.min_salary}">
+      </div>
+      <div>
+        <label for="max_salary">給与(最高)</label>
+        <input type="number" name="max_salary" id="max_salary" th:value="${entity.max_salary}">
+      </div>
+      <div>
+        <label for="description">内容</label>
+        <textarea rows="10" name="description" id="description" th:value="${entity.description}"></textarea>
+      </div>
+      <input type="submit" th:value="${entity.id} == 0 ? '登録' : '編集'">
+    </form>
+  </section>
+</div>
+</html>
