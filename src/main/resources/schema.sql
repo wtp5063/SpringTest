@@ -1,3 +1,3 @@
 CREATE TABLE IF NOT EXISTS customer(id int PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255), email VARCHAR(255), password VARCHAR(255), address VARCHAR(255), tel VARCHAR(255), role VARCHAR(255));
-CREATE TABLE IF NOT EXISTS job(id int PRIMARY KEY AUTO_INCREMENT, customer_id int, title VARCHAR(255), company VARCHAR(255), datetime DATETIME, description TEXT, min_salary int, max_salary int);
-CREATE TABLE IF NOT EXISTS offer(id int PRIMARY KEY AUTO_INCREMENT, customer_id int, job_id int, datetime DATETIME);
+CREATE TABLE IF NOT EXISTS job(id int PRIMARY KEY AUTO_INCREMENT, customer_id int, title VARCHAR(255), company VARCHAR(255), datetime DATETIME, description TEXT, min_salary int, max_salary int, CONSTRAINT job_customer FOREIGN KEY (customer_id) REFERENCES customer (id) ON DELETE CASCADE ON UPDATE CASCADE);
+CREATE TABLE IF NOT EXISTS offer(id int PRIMARY KEY AUTO_INCREMENT, customer_id int, job_id int, datetime DATETIME, CONSTRAINT offer_customer FOREIGN KEY (customer_id) REFERENCES customer (id) ON DELETE CASCADE ON UPDATE CASCADE, CONSTRAINT offer_job FOREIGN KEY (job_id) REFERENCES job (id) ON DELETE CASCADE ON UPDATE CASCADE);

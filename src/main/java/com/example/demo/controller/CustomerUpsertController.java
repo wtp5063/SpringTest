@@ -36,7 +36,7 @@ public class CustomerUpsertController
 {
     private final HttpSession session;
     private final Validator validator;
-    private final CustomerUpsertService upsertService;
+    private final CustomerUpsertService service;
 
     /**
      * 表示処理を行う。
@@ -98,7 +98,7 @@ public class CustomerUpsertController
 
     @GetMapping("/delete")
     public String delete(@RequestParam("id") String id, Model model) {
-        boolean result = upsertService.deleteById(Integer.parseInt(id));
+        boolean result = service.deleteById(Integer.parseInt(id));
         if(!result) {
             CustomerEntity entity = (CustomerEntity) session.getAttribute("entity");
             if (entity.getId() == 0)

@@ -25,12 +25,13 @@ import lombok.RequiredArgsConstructor;
 public class JobDaoImpl implements JobDao
 {
     /**
-     * データアクセス処理を行うテンプレート。
+     * データベースアクセス処理を行う。
      */
     private final JdbcTemplate jdbc;
 
     /**
      * 受け取ったEntityに格納されたデータをテーブルに挿入する。
+     *
      * @param entity job(求人情報)テーブルのEntity class。
      * @return 成功時：true、失敗時：false。
      */
@@ -44,6 +45,7 @@ public class JobDaoImpl implements JobDao
 
     /**
      * job(求人情報)テーブルのデータを全件取得して返す。
+     *
      * @return 成功時：jobテーブルのEntityのList、失敗時：null。
      */
     @Override
@@ -51,7 +53,7 @@ public class JobDaoImpl implements JobDao
     {
         try
         {
-            List<Map<String, Object>> getList = jdbc.queryForList("SELECT * FROM job");
+            List<Map<String, Object>> getList = jdbc.queryForList("SELECT * FROM job ORDER BY datetime DESC");
             List<JobEntity> jobList = new ArrayList<>();
             for (Map<String, Object> map : getList)
             {
@@ -62,8 +64,8 @@ public class JobDaoImpl implements JobDao
                 entity.setCompany((String) map.get("company"));
                 entity.setDatetime((Timestamp) map.get("datetime"));
                 entity.setDescription((String) map.get("description"));
-                entity.setMin_salary((String) map.get("min_salary"));
-                entity.setMax_salary((String) map.get("max_salary"));
+                entity.setMin_salary(String.valueOf(map.get("min_salary")));
+                entity.setMax_salary(String.valueOf(map.get("max_salary")));
                 jobList.add(entity);
             }
             return jobList;
@@ -76,7 +78,42 @@ public class JobDaoImpl implements JobDao
     }
 
     /**
+     * 受け取ったcustomer_idと一致するデータを取得し、Entityに格納後Listにして返す。
+     *
+     * @param customer_id cusotmer(ユーザー情報)テーブルのプライマリキー。
+     * @return 成功時：jobテーブルのEntity classのList、失敗時：null。
+     */
+    @Override
+    public List<JobEntity> findByCustomerId(int customer_id) throws DataAccessException
+    {
+        try
+        {
+            List<Map<String, Object>> getList = jdbc.queryForList("SELECT * FROM job WHERE customer_id = ? ORDER BY datetime DESC", customer_id);
+            List<JobEntity> jobList = new ArrayList<>();
+            for (Map<String, Object> map : getList)
+            {
+                JobEntity entity = new JobEntity();
+                entity.setId((int) map.get("id"));
+                entity.setCustomer_id((int) map.get("customer_id"));
+                entity.setTitle((String) map.get("title"));
+                entity.setCompany((String) map.get("company"));
+                entity.setDatetime((Timestamp) map.get("datetime"));
+                entity.setDescription((String) map.get("description"));
+                entity.setMin_salary(String.valueOf(map.get("min_salary")));
+                entity.setMax_salary(String.valueOf(map.get("max_salary")));
+                jobList.add(entity);
+            }
+            return jobList;
+        }
+        catch (EmptyResultDataAccessException e)
+        {
+            return null;
+        }
+    }
+
+    /**
      * 受け取ったidと一致するデータを取得し、Entityに格納して返す。
+     *
      * @param id job(求人情報)テーブルのプライマリキー。
      * @return 成功時：jobテーブルのEntity class、失敗時：null。
      */
@@ -93,8 +130,8 @@ public class JobDaoImpl implements JobDao
             entity.setCompany((String) map.get("company"));
             entity.setDatetime((Timestamp) map.get("datetime"));
             entity.setDescription((String) map.get("description"));
-            entity.setMin_salary((String) map.get("min_salary"));
-            entity.setMax_salary((String) map.get("max_salary"));
+            entity.setMin_salary(String.valueOf(map.get("min_salary")));
+            entity.setMax_salary(String.valueOf(map.get("max_salary")));
             return entity;
         }
         catch (EmptyResultDataAccessException e)
@@ -105,19 +142,22 @@ public class JobDaoImpl implements JobDao
 
     /**
      * 受け取ったEntityに格納されたidと一致するデータを、格納されたデータで上書きする。
+     *
      * @param job(求人情報)テーブルのEntity class。
      * @return 成功時：true、失敗時：false。
      */
     @Override
     public boolean updateById(JobEntity entity) throws DataAccessException
     {
-        int rowNum = jdbc.update("UPDATE job SET title = ?, company = ?, datetime = ?, description = ?, min_salary = ?, max_salary = ?"
-                , entity.getTitle(), entity.getCompany(), entity.getDatetime(), entity.getDescription(), entity.getMin_salary(), entity.getMax_salary());
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        int rowNum = jdbc.update("UPDATE job SET title = ?, company = ?, datetime = ?, description = ?, min_salary = ?, max_salary = ? WHERE id = ?", entity.getTitle(), entity.getCompany(), timestamp, entity.getDescription(),
+                entity.getMin_salary(), entity.getMax_salary(), entity.getId());
         return rowNum > 0;
     }
 
     /**
      * 受け取ったidと一致するデータを削除する。
+     *
      * @param id job(求人情報)テーブルのプライマリキー。
      * @return 成功時：true、失敗時：false。
      */
@@ -127,5 +167,4 @@ public class JobDaoImpl implements JobDao
         int rowNum = jdbc.update("DELETE FROM job WHERE id = ?", id);
         return rowNum > 0;
     }
-
 }

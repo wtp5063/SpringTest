@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="main">
+  <h2>応募一覧</h2>
+  <table th:each="offer : ${offerList}">
+    <tr>
+      <th>求人</th>
+      <td>[[${offer.title}]]</td>
+    </tr>
+    <tr>
+      <th>応募日時</th>
+      <td>[[${offer.datetime}]]</td>
+    </tr>
+    <tr>
+      <th>氏名</th>
+      <td>[[${offer.name}]]</td>
+    </tr>
+    <tr>
+      <th>メールアドレス</th>
+      <td>[[${offer.email}]]</td>
+    </tr>
+    <tr>
+      <th>住所</th>
+      <td>[[${offer.address}]]</td>
+    </tr>
+    <tr>
+      <th>電話番号</th>
+      <td>[[${offer.tel}]]</td>
+    </tr>
+  </table>
+</div>
+</html>

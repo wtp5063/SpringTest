@@ -1,8 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="main">
-<form th:action="@{/job/upsert}" method="get">
-<input type="submit" value="求人情報を作成する">
-</form>
+  <form th:action="@{/job/upsert}" method="get">
+    <input type="submit" value="求人情報を作成する">
+  </form>
+  <p>[[${msg}]]</p>
+    <section th:each="job : ${jobList}">
+    <h2><a th:href="@{job_detail(id=${job.id})}">[[${job.title}]]</a></h2>
+    <p>[[${job.company}]]</p>
+    <p>給与[[${job.min_salary}]]円〜[[${job.max_salary}]]円</p>
+  </section>
 </div>
 </html>

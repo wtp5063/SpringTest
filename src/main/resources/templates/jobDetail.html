@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div th:fragment="main">
+  <section>
+    <h2>[[${entity.title}]]</h2>
+    <p>会社名：[[${entity.company}]]</p>
+    <p>更新日時：[[${entity.datetime}]]</p>
+    <p>給与：[[${entity.min_salary}]]円〜[[${entity.max_salary}]]円</p>
+    <p>[[${entity.description}]]</p>
+    <div sec:authorize="hasRole('SEEKER')">
+      <form th:action="@{/job_detail}" method="post">
+        <input type="hidden" name="job_id" th:value="${entity.id}">
+        <input type="hidden" name="customer_id" th:value="${#authentication.principal.entity.id}">
+        <input type="submit" value="この求人に応募する" onClick="return confirm('この求人に応募しますか？')">
+      </form>
+    </div>
+    <div sec:authorize="hasRole('EMPLOYER')">
+      <form th:action="@{/job/upsert}" method="get">
+        <input type="hidden" name="id" th:value="${entity.id}">
+        <input type="hidden" name="title" th:value="${entity.title}">
+        <input type="hidden" name="company" th:value="${entity.company}">
+        <input type="hidden" name="description" th:value="${entity.description}">
+        <input type="hidden" name="min_salary" th:value="${entity.min_salary}">
+        <input type="hidden" name="max_salary" th:value="${entity.max_salary}">
+        <input type="submit" value="編集">
+      </form>
+      <a th:href="@{/job/delete(id=${entity.id})}" onClick="return confirm('この求人を削除して宜しいですか？')">この求人を削除する</a>
+    </div>
+  </section>
+</div>
+</html>

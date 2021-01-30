@@ -13,8 +13,8 @@
         <li sec:authorize="hasRole('ROLE_EMPLOYER')"><a href="/employer">ホーム</a></li>
         <li sec:authorize="!isAuthenticated()"><a href="/login">ログイン</a></li>
         <li sec:authorize="isAuthenticated()"><a href="customer_information">会員情報</a></li>
-        <li sec:authorize="hasRole('ROLE_SEEKER')"><a href="/">応募一覧</a></li>
-        <li sec:authorize="hasRole('ROLE_EMPLOYER')"><a href="/">応募一覧</a></li>
+        <li sec:authorize="hasRole('ROLE_SEEKER')"><a href="/seeker/offer_list">応募一覧</a></li>
+        <li sec:authorize="hasRole('ROLE_EMPLOYER')"><a href="/employer/offer_list">応募一覧</a></li>
         <li sec:authorize="isAuthenticated()"><a href="/logout">ログアウト</a></li>
       </ul>
     </nav>

@@ -15,6 +15,7 @@ public interface JobDao
 {
     public boolean insert(JobEntity entity) throws DataAccessException;
     public List<JobEntity> findAll() throws DataAccessException;
+    public List<JobEntity> findByCustomerId(int customer_id) throws DataAccessException;
     public JobEntity findById(int id) throws DataAccessException;
     public boolean updateById(JobEntity entity) throws DataAccessException;
     public boolean deleteById(int id) throws DataAccessException;

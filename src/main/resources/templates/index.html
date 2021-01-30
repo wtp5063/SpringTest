@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="main">
-ホーム
+<p>[[${msg}]]</p>
+  <div>
+    <section th:each="job : ${jobList}">
+      <h2><a th:href="@{/job_detail(id=${job.id})}">[[${job.title}]]</a></h2>
+      <p>[[${job.company}]]</p>
+      <p>給与：[[${job.min_salary}]]円〜[[${job.max_salary}]]円</p>
+    </section>
+  </div>
 </div>
 </html>

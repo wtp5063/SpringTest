@@ -37,7 +37,7 @@ public class CustomerUpsertConfirmController
     /**
      * 登録or編集確認画面用Service class。
      */
-    private final CustomerUpsertConfirmService confirmService;
+    private final CustomerUpsertConfirmService service;
 
     /**
      * 表示処理を行う。
@@ -74,7 +74,7 @@ public class CustomerUpsertConfirmController
         session.removeAttribute("entity");
         if (entity.getId() == 0)
         {
-            boolean result = confirmService.insert(entity);
+            boolean result = service.insert(entity);
             if (result)
             {
                 redirect.addFlashAttribute("msg", "登録に成功しました");
@@ -87,7 +87,7 @@ public class CustomerUpsertConfirmController
         }
 
         //updateの場合(idが0以外)の場合の処理。
-        boolean result = confirmService.updateById(entity);
+        boolean result = service.updateById(entity);
         if (result)
         {
             redirect.addFlashAttribute("msg", "編集に成功しました");

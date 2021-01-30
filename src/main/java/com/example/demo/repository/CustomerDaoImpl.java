@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 
 /**
  * customer(ユーザー情報)テーブルのDao実装クラス。
+ *
  * @author tanakamasato
  * @since 2021/01/26
  */
@@ -22,12 +23,13 @@ import lombok.RequiredArgsConstructor;
 public class CustomerDaoImpl implements CustomerDao
 {
     /**
-     * データアクセス処理を行うテンプレート。
+     * データベースアクセス処理を行う。
      */
     private final JdbcTemplate jdbc;
 
     /**
      * 受け取ったEntity classに格納されたデータをテーブルに挿入する。
+     *
      * @param entity customer(ユーザー情報)テーブルのEntity class。
      * @return 成功時：true、失敗時：false。
      */
@@ -35,13 +37,13 @@ public class CustomerDaoImpl implements CustomerDao
     public boolean insert(CustomerEntity entity) throws DataAccessException
     {
         String password = EncodeUtil.passwordEncoder().encode(entity.getPassword());
-        int rowNum = jdbc.update("INSERT INTO customer (name, email, password, address, tel, role) VALUES(?, ?, ?, ?, ?, ?)"
-                , entity.getName(), entity.getEmail(), password, entity.getAddress(), entity.getTel(), entity.getRole());
+        int rowNum = jdbc.update("INSERT INTO customer (name, email, password, address, tel, role) VALUES(?, ?, ?, ?, ?, ?)", entity.getName(), entity.getEmail(), password, entity.getAddress(), entity.getTel(), entity.getRole());
         return rowNum > 0;
     }
 
     /**
      * 受け取ったidと一致するレコードを取得し、Entityに格納して返す。
+     *
      * @param id customer(ユーザー情報)テーブルのプライマリキー。
      * @return customer(ユーザー情報)テーブルのEntity class。
      */
@@ -69,6 +71,7 @@ public class CustomerDaoImpl implements CustomerDao
 
     /**
      * 受け取ったメールアドレスと一致するレコードを取得し、Entityに格納して返す。
+     *
      * @param email メールアドレス。
      * @return customer(ユーザー情報)テーブルのEntity class。
      */
@@ -96,6 +99,7 @@ public class CustomerDaoImpl implements CustomerDao
 
     /**
      * 受け取ったEntityに格納されたidと一致するレコードを格納されたデータで上書きする。
+     *
      * @param entity customer(ユーザー情報)テーブルのプライマリキー。
      * @return 成功時：true、失敗時：false。
      */
@@ -103,13 +107,14 @@ public class CustomerDaoImpl implements CustomerDao
     public boolean updateById(CustomerEntity entity) throws DataAccessException
     {
         String password = EncodeUtil.passwordEncoder().encode(entity.getPassword());
-        int rowNum = jdbc.update("UPDATE customer SET name = ?, email = ?, password = ?, address = ?, tel = ?, role = ? WHERE id = ?"
-                , entity.getName(), entity.getEmail(), password, entity.getAddress(), entity.getTel(), entity.getRole(), entity.getId());
+        int rowNum = jdbc.update("UPDATE customer SET name = ?, email = ?, password = ?, address = ?, tel = ?, role = ? WHERE id = ?", entity.getName(), entity.getEmail(), password, entity.getAddress(), entity.getTel(), entity.getRole(),
+                entity.getId());
         return rowNum > 0;
     }
 
     /**
      * 受け取ったプライマリキーと一致するレコードを削除する。
+     *
      * @param id customer(ユーザー情報)テーブルのプライマリキー。
      * @return 成功時：true、失敗時：false。
      */

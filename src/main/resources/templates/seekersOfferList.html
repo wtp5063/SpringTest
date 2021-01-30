@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="main">
+  <section th:each="offer : ${offerList}">
+    <table>
+      <tr>
+        <th>求人</th>
+        <td>[[${offer.title}]]</td>
+      </tr>
+      <tr>
+        <th>応募日時</th>
+        <td>[[${offer.datetime}]]</td>
+      </tr>
+      <tr>
+        <th>会社名</th>
+        <td>[[${offer.company}]]</td>
+      </tr>
+      <tr>
+        <th>給与</th>
+        <td>[[${offer.min_salary}]]円〜[[${offer.max_salary}]]円</td>
+      </tr>
+    </table>
+    <form th:action="@{/seeker/delete}" method="post">
+      <input type="hidden" name="id" th:value="${offer.id}">
+      <input type="submit" value="取り消し">
+    </form>
+  </section>
+</div>
+</html>
