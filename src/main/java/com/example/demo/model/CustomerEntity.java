@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -56,6 +57,7 @@ public class CustomerEntity
     /**
      * 権限(採用者はROLE_EMPLOYER、求職者はROLE_SEEKER)
      */
+    @NotEmpty(groups = ValidGroup1.class)
     private String role;
 
     /**

@@ -70,11 +70,11 @@ public class CustomerUpsertConfirmController
         }
 
         //insert(idが0)の場合の処理。
-        CustomerEntity entity = (CustomerEntity) session.getAttribute("entity");
-        session.removeAttribute("entity");
-        if (entity.getId() == 0)
+        CustomerEntity customer = (CustomerEntity) session.getAttribute("customer");
+        session.removeAttribute("customer");
+        if (customer.getId() == 0)
         {
-            boolean result = service.insert(entity);
+            boolean result = service.insert(customer);
             if (result)
             {
                 redirect.addFlashAttribute("msg", "登録に成功しました");
@@ -87,17 +87,17 @@ public class CustomerUpsertConfirmController
         }
 
         //updateの場合(idが0以外)の場合の処理。
-        boolean result = service.updateById(entity);
+        boolean result = service.updateById(customer);
         if (result)
         {
             redirect.addFlashAttribute("msg", "編集に成功しました");
         }
         else
         {
-            redirect.addFlashAttribute("msg", "登録に失敗しました");
+            redirect.addFlashAttribute("msg", "編集に失敗しました");
         }
         SecurityContext context = SecurityContextHolder.getContext();
-        LoginUser user = new LoginUser(entity);
+        LoginUser user = new LoginUser(customer);
         context.setAuthentication(new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities()));
         return "redirect:/customer_information";
     }

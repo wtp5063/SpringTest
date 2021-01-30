@@ -1,14 +1,26 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="main">
-  <form th:action="@{/job/upsert}" method="get">
-    <input type="submit" value="求人情報を作成する">
-  </form>
-  <p>[[${msg}]]</p>
-    <section th:each="job : ${jobList}">
-    <h2><a th:href="@{job_detail(id=${job.id})}">[[${job.title}]]</a></h2>
-    <p>[[${job.company}]]</p>
-    <p>給与[[${job.min_salary}]]円〜[[${job.max_salary}]]円</p>
-  </section>
+  <div class="bg-dark pb-4 pl-3">
+    <div class="container">
+      <form th:action="@{/job/upsert}" method="get">
+        <input class="btn btn-success" type="submit" value="求人情報を作成する">
+      </form>
+    </div>
+  </div>
+  <div class="container">
+    <p class="m-2">[[${msg}]]</p>
+    <div class="d-flex flex-wrap justify-content-between">
+      <section class="mt-5 block shadow mb-5 bg-light rounded" th:each="job : ${jobList}">
+        <h4 class="bg-info p-3 rounded-top">
+          <a class="text-light" th:href="@{job_detail(id=${job.id})}">[[${job.title}]]</a>
+        </h4>
+        <div class="pl-3 pr-3 pb-3">
+          <p>[[${job.company}]]</p>
+          <p>給与[[${job.min_salary}]]円〜[[${job.max_salary}]]円</p>
+        </div>
+      </section>
+    </div>
+  </div>
 </div>
 </html>

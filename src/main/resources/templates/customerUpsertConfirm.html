@@ -1,35 +1,37 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="main">
-  <h2>この内容で宜しいですか？</h2>
-  <table>
-    <tr>
-      <th>名前</th>
-      <td>[[${session['entity'].name}]]</td>
-    </tr>
-    <tr>
-      <th>Email</th>
-      <td>[[${session['entity'].email}]]</td>
-    </tr>
-    <tr>
-      <th>住所</th>
-      <td>[[${session['entity'].address}]]</td>
-    </tr>
-    <tr>
-      <th>電話番号</th>
-      <td>[[${session['entity'].tel}]]</td>
-    </tr>
-    <tr>
-      <th>権限</th>
-      <div th:switch="${session['entity'].role}">
-        <td th:case="ROLE_EMPLOYER">採用担当者様</td>
-        <td th:case="ROLE_SEEKER">求職者様</td>
-      </div>
-    </tr>
-  </table>
-  <form th:action="@{/customer/upsert_confirm}" method="post">
-    <input type="submit" name="button" value="OK">
-    <input type="submit" name="button" value="戻る">
-  </form>
+  <section class="col-md-8 mx-auto pdd">
+    <h2>この内容で宜しいですか？</h2>
+    <table class="table">
+      <tr>
+        <th>名前</th>
+        <td>[[${session['customer'].name}]]</td>
+      </tr>
+      <tr>
+        <th>Email</th>
+        <td>[[${session['customer'].email}]]</td>
+      </tr>
+      <tr>
+        <th>住所</th>
+        <td>[[${session['customer'].address}]]</td>
+      </tr>
+      <tr>
+        <th>電話番号</th>
+        <td>[[${session['customer'].tel}]]</td>
+      </tr>
+      <tr>
+        <th>権限</th>
+        <div th:switch="${session['customer'].role}">
+          <td th:case="ROLE_EMPLOYER">採用担当者様</td>
+          <td th:case="ROLE_SEEKER">求職者様</td>
+        </div>
+      </tr>
+    </table>
+    <form th:action="@{/customer/upsert_confirm}" method="post">
+      <input class="btn btn-success" type="submit" name="button" value="戻る">
+      <input class="btn btn-success" type="submit" name="button" value="OK">
+    </form>
+  </section>
 </div>
 </html>

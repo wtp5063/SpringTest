@@ -43,11 +43,11 @@ public class JobUpsertConfirmController
         {
             return "redirect:/job/upsert";
         }
-        JobEntity entity = (JobEntity) session.getAttribute("entity");
-        session.removeAttribute("entity");
-        if (entity.getId() == 0)
+        JobEntity job = (JobEntity) session.getAttribute("job");
+        session.removeAttribute("job");
+        if (job.getId() == 0)
         {
-            boolean result = service.insert(entity);
+            boolean result = service.insert(job);
             if (result)
             {
                 redirect.addFlashAttribute("msg", "登録に成功しました");
@@ -59,7 +59,7 @@ public class JobUpsertConfirmController
         }
         else
         {
-            boolean result = service.updateById(entity);
+            boolean result = service.updateById(job);
             if (result)
             {
                 redirect.addFlashAttribute("msg", "編集に成功しました");

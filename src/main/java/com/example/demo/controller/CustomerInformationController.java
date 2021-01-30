@@ -26,7 +26,7 @@ public class CustomerInformationController
     @GetMapping("/customer_information")
     public String information(@ModelAttribute CustomerEntity entity, Model model) {
         LoginUser user = (LoginUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        model.addAttribute("user", user.getEntity());
+        model.addAttribute("customer", user.getEntity());
         model.addAttribute("title", "プロフィール");
         model.addAttribute("main", "customerInformation::main");
         return "layout";

@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="main">
+<section class="col-md-8 mx-auto pdd">
   <h2>応募一覧</h2>
-  <table th:each="offer : ${offerList}">
+  <table class="table table-dark mt-1" th:each="offer : ${offerList}">
     <tr>
       <th>求人</th>
       <td>[[${offer.title}]]</td>
@@ -28,5 +29,6 @@
       <td>[[${offer.tel}]]</td>
     </tr>
   </table>
+  </section>
 </div>
 </html>

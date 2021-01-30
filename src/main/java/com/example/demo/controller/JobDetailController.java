@@ -37,8 +37,8 @@ public class JobDetailController
      */
     @GetMapping("/job_detail")
     public String detail(@RequestParam("id") int id, Model model) {
-        JobEntity entity = service.findById(id);
-        model.addAttribute("entity", entity);
+        JobEntity job = service.findById(id);
+        model.addAttribute("job", job);
         model.addAttribute("title", "SpringTest:求人詳細");
         model.addAttribute("main", "jobDetail::main");
         return "layout";

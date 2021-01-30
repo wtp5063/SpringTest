@@ -88,7 +88,7 @@ public class OfferDaoImpl implements OfferDao
     {
         try
         {
-            List<Map<String, Object>> getList = jdbc.queryForList("SELECT offer.id, offer.datetime, job.title, job.company, job.min_salary, job.max_salary FROM offer JOIN job ON offer.job_id = job.id WHERE offer.customer_id = ?",
+            List<Map<String, Object>> getList = jdbc.queryForList("SELECT offer.id, offer.datetime, job.title, job.company, job.min_salary, job.max_salary FROM offer JOIN job ON offer.job_id = job.id WHERE offer.customer_id = ? ORDER BY offer.datetime DESC",
                     customer_id);
             List<SeekersOfferListDto> dtoList = new ArrayList<>();
             for (Map<String, Object> map : getList)

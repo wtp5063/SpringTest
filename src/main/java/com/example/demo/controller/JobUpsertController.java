@@ -43,18 +43,18 @@ public class JobUpsertController
     /**
      * 表示処理を行う。
      *
-     * @param entity job(求人情報)テーブルのentity class。
+     * @param job job(求人情報)テーブルのentity class。
      * @param model
      * @return thymeleafテンプレート。
      */
     @GetMapping("/upsert")
-    public String input(@ModelAttribute("entity") JobEntity entity, Model model)
+    public String input(@ModelAttribute("job") JobEntity job, Model model)
     {
-        if (session.getAttribute("entity") == null)
+        if (session.getAttribute("job") == null)
         {
-            session.setAttribute("entity", entity);
+            session.setAttribute("job", job);
         }
-        if (entity.getId() == 0)
+        if (job.getId() == 0)
         {
             model.addAttribute("title", "新規会員登録");
         }
@@ -67,12 +67,12 @@ public class JobUpsertController
     }
 
     @PostMapping("/upsert")
-    public String submit(@ModelAttribute("entity") @Validated(GroupOrder.class) JobEntity entity, BindingResult bindingResult, Model model)
+    public String submit(@ModelAttribute("job") @Validated(GroupOrder.class) JobEntity job, BindingResult bindingResult, Model model)
     {
-        session.setAttribute("entity", entity);
+        session.setAttribute("job", job);
         if (bindingResult.hasErrors())
         {
-            if (entity.getId() == 0)
+            if (job.getId() == 0)
             {
                 model.addAttribute("title", "新規会員登録");
             }
@@ -90,6 +90,7 @@ public class JobUpsertController
     public String delete(@RequestParam int id, Model model, RedirectAttributes redirect)
     {
         boolean result = service.deleteById(id);
+        session.removeAttribute("job");
         if (result)
         {
             redirect.addFlashAttribute("msg", "削除に成功しました");

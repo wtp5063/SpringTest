@@ -1,28 +1,29 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="main">
-  <section>
+  <section class="col-md-8 mx-auto pdd">
     <h2>この内容で宜しいですか？</h2>
-    <table>
+    <table class="table">
       <tr>
         <th>タイトル</th>
-        <td>[[${session['entity'].title}]]</td>
+        <td>[[${session['job'].title}]]</td>
       </tr>
       <tr>
         <th>会社名</th>
-        <td>[[${session['entity'].company}]]</td>
+        <td>[[${session['job'].company}]]</td>
       </tr>
       <tr>
         <th>給与</th>
-        <td>[[${session['entity'].min_salary}]]円〜[[${session['entity'].max_salary}]]円</td>
+        <td>[[${session['job'].min_salary}]]円〜[[${session['job'].max_salary}]]円</td>
       </tr>
       <tr>
         <th>電話番号</th>
-        <td>[[${session['entity'].description}]]</td>
+        <td>[[${session['job'].description}]]</td>
       </tr>
     </table>
     <form th:action="@{/job/upsert_confirm}" method="post">
-      <input type="submit" name="button" value="OK"> <input type="submit" name="button" value="戻る">
+      <input class="btn btn-success" type="submit" name="button" value="戻る">
+      <input class="btn btn-success" type="submit" name="button" value="OK">
     </form>
   </section>
 </div>

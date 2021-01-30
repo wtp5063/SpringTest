@@ -2,37 +2,41 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="main">
   <section>
-    <h2>求人情報[[${session['entity'].id} == 0 ? '登録' : '編集']]</h2>
-    <form th:action="@{/job/upsert}" method="post" th:object="${entity}">
+  <div class="col-md-6 mx-auto p-5">
+    <h2>求人情報[[${session['job'].id} == 0 ? '登録' : '編集']]</h2>
+    <form th:action="@{/job/upsert}" method="post" th:object="${job}">
       <ul>
-        <li th:each="error:${#fields.detailedErrors()}">
-          <span th:text="${error.message}"></span>
+        <li class="list-unstyled" th:each="error:${#fields.detailedErrors()}">
+          <span th:text="${error.message}" class="text-danger"></span>
         </li>
       </ul>
-      <input type="hidden" name="id" th:value="${session['entity'].id}">
+      <input type="hidden" name="id" th:value="${session['job'].id}">
       <input type="hidden" name="customer_id" th:value="${#authentication.principal.entity.id}">
-      <div>
-        <label for="title">タイトル</label>
-        <input type="text" name="title" id="title" th:value="${session['entity'].title}">
-      </div>
-      <div>
-        <label for="company">会社名</label>
-        <input type="text" name="company" id="company" th:value="${session['entity'].company}">
-      </div>
-      <div>
-        <label for="min_salary">給与(最低)</label>
-        <input type="text" name="min_salary" id="min_salary" th:value="${session['entity'].min_salary}">
-      </div>
-      <div>
-        <label for="max_salary">給与(最高)</label>
-        <input type="text" name="max_salary" id="max_salary" th:value="${session['entity'].max_salary}">
-      </div>
-      <div>
-        <label for="description">内容</label>
-        <textarea rows="10" name="description" id="description">[[${session['entity'].description}]]</textarea>
-      </div>
-      <input type="submit" th:value="${session['entity'].id} == 0 ? '登録' : '編集'">
+        <div class="form-group">
+          <label for="title">タイトル</label>
+          <input class="form-control" type="text" name="title" id="title" th:value="${session['job'].title}">
+        </div>
+        <div class="form-group">
+          <label for="company">会社名</label>
+          <input class="form-control" type="text" name="company" id="company" th:value="${session['job'].company}">
+        </div>
+        <div class="form-group">
+          <label for="min_salary">給与(最低)</label>
+          <input class="form-control" type="text" name="min_salary" id="min_salary" th:value="${session['job'].min_salary}">
+        </div>
+        <div class="form-group">
+          <label for="max_salary">給与(最高)</label>
+          <input class="form-control" type="text" name="max_salary" id="max_salary" th:value="${session['job'].max_salary}">
+        </div>
+        <div class="form-group">
+          <label for="description">内容</label>
+          <textarea class="form-control" rows="10" name="description" id="description">[[${session['job'].description}]]</textarea>
+        </div>
+        <div class="form-group">
+          <input type="submit" th:value="${session['job'].id} == 0 ? '登録' : '編集'" class="btn btn-success">
+        </div>
     </form>
+      </div>
   </section>
 </div>
 </html>

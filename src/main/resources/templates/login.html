@@ -1,23 +1,23 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="main">
-  <section>
-    <h2>ログイン</h2>
-    <p>[[${msg}]]</p>
-    <div>
-      <form th:action="@{/login}" method="post">
-        <div>
-          <label for="email">メールアドレス</label>
-          <input type="text" name="email" id="email">
-        </div>
-        <div>
-          <label for="password">メールアドレス</label>
-          <input type="password" name="password" id="password">
-        </div>
-        <input type="submit" value="ログイン">
-      </form>
+  <section class="container">
+    <div class="login-container">
+    <div class="avatar"></div>
+    <p class="text-danger">[[${msg}]]</p>
+    <div class="form-box">
+        <form th:action="@{/login}" method="post">
+          <div>
+            <input type="text" name="email" id="email" placeholder="メールアドレス">
+          </div>
+          <div>
+            <input type="password" name="password" id="password" placeholder="パスワード">
+          </div>
+          <button type="submit" value="ログイン" class="btn btn-success btn-block login">ログイン</button>
+        </form>
+      </div>
+    <a href="/customer/upsert">新規会員登録はこちら</a>
     </div>
   </section>
-  <a href="/customer/upsert">新規会員登録はこちら</a>
 </div>
 </html>

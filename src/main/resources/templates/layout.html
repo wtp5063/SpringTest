@@ -2,30 +2,41 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <meta charset="UTF-8">
 <title th:text="${title}?:_">Insert title here</title>
+<link th:href="@{/css/reset.css}" rel="stylesheet">
+<link th:href="@{/webjars/bootstrap/4.6.0/css/bootstrap.min.css}" rel="stylesheet" />
+<link th:href="@{/css/style.css}" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body>
+<body class="bg-light">
   <header>
-    <h1>SpringTest</h1>
-    <nav>
-      <ul>
-        <li sec:authorize="!isAuthenticated()"><a href="/">ホーム</a></li>
-        <li sec:authorize="hasRole('ROLE_SEEKER')"><a  href="/">ホーム</a></li>
-        <li sec:authorize="hasRole('ROLE_EMPLOYER')"><a href="/employer">ホーム</a></li>
-        <li sec:authorize="!isAuthenticated()"><a href="/login">ログイン</a></li>
-        <li sec:authorize="isAuthenticated()"><a href="customer_information">会員情報</a></li>
-        <li sec:authorize="hasRole('ROLE_SEEKER')"><a href="/seeker/offer_list">応募一覧</a></li>
-        <li sec:authorize="hasRole('ROLE_EMPLOYER')"><a href="/employer/offer_list">応募一覧</a></li>
-        <li sec:authorize="isAuthenticated()"><a href="/logout">ログアウト</a></li>
-      </ul>
+    <nav class="navbar navbar-expand-lg  navbar-light navbar-dark bg-dark">
+      <div class="container">
+        <h1 class="navbar-brand">SpringTest</h1>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav list-unstyled">
+            <li class="nav-item active" sec:authorize="!isAuthenticated()"><a class="nav-link" href="/">ホーム</a></li>
+            <li class="nav-item active" sec:authorize="hasRole('ROLE_SEEKER')"><a class="nav-link" href="/">ホーム</a></li>
+            <li class="nav-item active" sec:authorize="hasRole('ROLE_EMPLOYER')"><a class="nav-link" href="/employer">ホーム</a></li>
+            <li class="nav-item" sec:authorize="!isAuthenticated()"><a class="nav-link" href="/login">ログイン</a></li>
+            <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" href="/customer_information">会員情報</a></li>
+            <li class="nav-item" sec:authorize="hasRole('ROLE_SEEKER')"><a class="nav-link" href="/seeker/offer_list">応募一覧</a></li>
+            <li class="nav-item" sec:authorize="hasRole('ROLE_EMPLOYER')"><a class="nav-link" href="/employer/offer_list">応募一覧</a></li>
+            <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" href="/logout">ログアウト</a></li>
+          </ul>
+        </div>
+      </div>
     </nav>
-    <hr>
   </header>
-  <main>
+  <main class="min-vh-100">
     <div th:include="__${main}__"></div>
   </main>
-  <footer>
-    <hr>
-    <p>&copy;2021 SpringTest</p>
+  <footer class="bg-dark">
+    <p class="text-center p-3 text-light">&copy;2021 SpringTest</p>
   </footer>
+  <script type="text/javascript" th:src="@{/webjars/jquery/3.5.1/jquery.min.js}"></script>
+  <script type="text/javascript" th:src="@{/webjars/bootstrap/4.6.0/js/bootstrap.min.js}"></script>
 </body>
 </html>
