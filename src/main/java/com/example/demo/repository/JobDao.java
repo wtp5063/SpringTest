@@ -19,4 +19,5 @@ public interface JobDao
     public JobEntity findById(int id) throws DataAccessException;
     public boolean updateById(JobEntity entity) throws DataAccessException;
     public boolean deleteById(int id) throws DataAccessException;
+    public List<JobEntity> search(String value) throws DataAccessException;
 }

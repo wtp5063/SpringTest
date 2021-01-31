@@ -30,6 +30,14 @@
       </div>
     </nav>
   </header>
+  <div class="bg-dark pb-4" sec:authorize="!hasRole('EMPLOYER')">
+    <div class="container">
+      <form th:action="@{/search}" method="get" class="form-inline">
+        <input name="value" class="col-5 form-control" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-success" type="submit">Search</button>
+      </form>
+    </div>
+  </div>
   <main class="min-vh-100">
     <div th:include="__${main}__"></div>
   </main>

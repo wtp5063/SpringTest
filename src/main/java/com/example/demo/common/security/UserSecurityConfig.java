@@ -25,7 +25,7 @@ public class UserSecurityConfig extends WebSecurityConfigurerAdapter
     @Override
     protected void configure(HttpSecurity http) throws Exception{
         http.authorizeRequests()
-            .antMatchers("/", "/login", "/job_detail", "/customer/**")
+            .antMatchers("/", "/login", "/job_detail", "/customer/**", "/search")
             .permitAll()
             .antMatchers("/employer").hasRole("EMPLOYER")
             .anyRequest().authenticated()

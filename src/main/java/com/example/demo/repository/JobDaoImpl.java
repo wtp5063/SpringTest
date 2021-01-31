@@ -167,4 +167,37 @@ public class JobDaoImpl implements JobDao
         int rowNum = jdbc.update("DELETE FROM job WHERE id = ?", id);
         return rowNum > 0;
     }
+
+    /**
+     * 受け取ったvalueと一致するデータを取得し、Entityに格納後Listにして返す。
+     * @param value 入力された文字列。
+     * @return 成功時：jobテーブルのEntity classのList、失敗時：null。
+     */
+    @Override
+    public List<JobEntity> search(String value) throws DataAccessException
+    {
+        try
+        {
+            List<Map<String, Object>> getList = jdbc.queryForList("SELECT * FROM job WHERE title LIKE ? OR company LIKE ? OR description LIKE ?", "%" + value + "%", "%" + value + "%", "%" + value + "%");
+            List<JobEntity> jobList = new ArrayList<>();
+            for (Map<String, Object> map : getList)
+            {
+                JobEntity entity = new JobEntity();
+                entity.setId((int) map.get("id"));
+                entity.setCustomer_id((int) map.get("customer_id"));
+                entity.setTitle((String) map.get("title"));
+                entity.setCompany((String) map.get("company"));
+                entity.setDatetime((Timestamp) map.get("datetime"));
+                entity.setDescription((String) map.get("description"));
+                entity.setMin_salary(String.valueOf(map.get("min_salary")));
+                entity.setMax_salary(String.valueOf(map.get("max_salary")));
+                jobList.add(entity);
+            }
+            return jobList;
+        }
+        catch (EmptyResultDataAccessException e)
+        {
+            return null;
+        }
+    }
 }
