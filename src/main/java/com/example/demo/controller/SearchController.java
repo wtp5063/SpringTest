@@ -26,6 +26,12 @@ public class SearchController
      */
     private final SearchService service;
 
+    /**
+     * 渡された文字列から一致するデータを取得し、画面に表示する。
+     * @param value 入力された文字列。
+     * @param model
+     * @return thymeleafテンプレート。
+     */
     @GetMapping("/search")
     public String search(@RequestParam String value, Model model) {
         List<JobEntity> jobList = service.search(value);
