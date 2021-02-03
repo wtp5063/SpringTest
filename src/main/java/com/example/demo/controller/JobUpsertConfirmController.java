@@ -1,10 +1,8 @@
 package com.example.demo.controller;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,26 +23,29 @@ public class JobUpsertConfirmController
      */
     private final JobUpsertConfirmService service;
 
-    /**
-     * セッションの取得を行う。
-     */
-    private final HttpSession session;
-
-    @GetMapping("/upsert_confirm")
-    public String confirm(Model model) {
-        model.addAttribute("title", "確認画面");
-        model.addAttribute("main", "jobUpsertConfirm::main");
-        return "layout";
-    }
+//    @GetMapping("/upsert_confirm")
+//    public String confirm(Model model) {
+//        model.addAttribute("title", "確認画面");
+//        model.addAttribute("main", "jobUpsertConfirm::main");
+//        return "layout";
+//    }
 
     @PostMapping("/upsert_confirm")
-    public String submit(@RequestParam String button, Model model, RedirectAttributes redirect) {
+    public String submit(@RequestParam String button, @ModelAttribute("job") JobEntity job, Model model, RedirectAttributes redirect)
+    {
         if (button.equals("戻る"))
         {
-            return "redirect:/job/upsert";
+            if (job.getId() == 0)
+            {
+                model.addAttribute("title", "新規会員登録");
+            }
+            else
+            {
+                model.addAttribute("title", "会員情報編集");
+            }
+            model.addAttribute("main", "jobUpsert::main");
+            return "layout";
         }
-        JobEntity job = (JobEntity) session.getAttribute("job");
-        session.removeAttribute("job");
         if (job.getId() == 0)
         {
             boolean result = service.insert(job);

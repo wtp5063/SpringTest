@@ -50,24 +50,22 @@ public class CustomerUpsertController
     private final CustomerUpsertService service;
 
     /**
-     * 表示処理を行う。
-     * セッションにインスタンスが格納されていなければ格納する。
+     * 表示処理を行う。 セッションにインスタンスが格納されていなければ格納する。
      * entityに格納されているidが0か0以外かでmodelに格納するタイトルを変える。
+     *
      * @param customer customer(ユーザー情報)テーブルのEntity class。
      * @param model
      * @return thymeleafテンプレート。
      */
     @GetMapping("/upsert")
-    public String input(@ModelAttribute("customer") CustomerEntity customer, Model model) {
-        System.out.println(customer.getId());
-        if (session.getAttribute("customer") == null)
-        {
-            session.setAttribute("customer", customer);
-        }
+    public String input(@ModelAttribute("customer") CustomerEntity customer, Model model)
+    {
         if (customer.getId() == 0)
         {
             model.addAttribute("title", "SpringTest:新規会員登録");
-        } else {
+        }
+        else
+        {
             model.addAttribute("title", "SpringTest:会員情報編集");
         }
         model.addAttribute("main", "customerUpsert::main");
@@ -75,9 +73,9 @@ public class CustomerUpsertController
     }
 
     /**
-     * エラーがあれば登録or編集画面を再度開き、
-     * エラーが無ければ確認画面にリダイレクトする。
-     * @param customer customer(ユーザー情報)テーブルのEntity class。
+     * エラーがあれば登録or編集画面を再度開き、 エラーが無ければ確認画面にリダイレクトする。
+     *
+     * @param customer      customer(ユーザー情報)テーブルのEntity class。
      * @param bindingResult エラー情報。
      * @param model
      * @return リダイレクト処理。
@@ -85,37 +83,53 @@ public class CustomerUpsertController
     @PostMapping("/upsert")
     public String update(@ModelAttribute("customer") CustomerEntity customer, Errors errors, Model model)
     {
-
-        session.setAttribute("customer", customer);
+        // バリデーションのグループ設定。
         List<Object> groupList = new ArrayList<>();
-        if(customer.getId() == 0) {
+        if (customer.getId() == 0)
+        {
             groupList.add(InsertGroup.class);
         }
         groupList.add(GroupOrder.class);
-        ValidationUtils.invokeValidator(validator,(Object) customer, errors, groupList.toArray());
+        ValidationUtils.invokeValidator(validator, (Object) customer, errors, groupList.toArray());
+
         if (errors.hasErrors())
         {
             if (customer.getId() == 0)
             {
                 model.addAttribute("title", "SpringTest:新規会員登録");
-            } else {
+            }
+            else
+            {
                 model.addAttribute("title", "SpringTest:会員情報編集");
             }
             model.addAttribute("main", "customerUpsert::main");
             return "layout";
         }
-        return "redirect:/customer/upsert_confirm";
+      model.addAttribute("title", "確認画面");
+      model.addAttribute("main", "customerUpsertConfirm::main");
+      return "layout";
     }
 
+    /**
+     * 受け取ったidと一致するデータを削除してログアウトする。
+     *
+     * @param id    customer(顧客情報)テーブルのプライマリキー。
+     * @param model
+     * @return リダイレクト情報。
+     */
     @GetMapping("/delete")
-    public String delete(@RequestParam("id") String id, Model model) {
+    public String delete(@RequestParam("id") String id, Model model)
+    {
         boolean result = service.deleteById(Integer.parseInt(id));
-        if(!result) {
+        if (!result)
+        {
             CustomerEntity entity = (CustomerEntity) session.getAttribute("customer");
             if (entity.getId() == 0)
             {
                 model.addAttribute("title", "SpringTest:新規会員登録");
-            } else {
+            }
+            else
+            {
                 model.addAttribute("title", "SpringTest:会員情報編集");
             }
             model.addAttribute("main", "customerUpsert::main");

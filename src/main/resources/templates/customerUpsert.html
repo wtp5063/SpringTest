@@ -2,44 +2,44 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="main">
   <section class="col-md-6 mx-auto p-5">
-    <h2>[[${session['customer'].id} == 0 ? '新規会員登録' : '会員情報編集']]</h2>
+    <h2>[[${customer.id} == 0 ? '新規会員登録' : '会員情報編集']]</h2>
     <form th:action="@{/customer/upsert}" method="post" th:object="${customer}">
      <ul>
       <li class="list-unstyled" th:each="error:${#fields.detailedErrors()}">
         <span th:text="${error.message}" class="text-danger"></span>
       </li>
     </ul>
-    <input type="hidden" name="id" th:value="${session['customer'].id}">
+    <input type="hidden" name="id" th:value="${customer.id}">
       <div class="form-group">
         <label for="name">お名前</label>
-        <input class="form-control" type="text" name="name" id="name" th:value="${session['customer'].name}">
+        <input class="form-control" type="text" name="name" id="name" th:value="${customer.name}">
       </div>
       <div class="form-group">
         <label for="email">Email</label>
-        <input class="form-control" type="text" name="email" id="email" th:value="${session['customer'].email}">
+        <input class="form-control" type="text" name="email" id="email" th:value="${customer.email}">
       </div>
       <div class="form-group">
         <label for="password">パスワード</label>
-        <input class="form-control" type="password" name="password" id="password" th:value="${session['customer'].password}">
+        <input class="form-control" type="password" name="password" id="password" th:value="${customer.password}">
       </div>
       <div class="form-group">
         <label for="address">住所</label>
-        <input class="form-control" type="text" name="address" id="address" th:value="${session['customer'].address}">
+        <input class="form-control" type="text" name="address" id="address" th:value="${customer.address}">
       </div>
       <div class="form-group">
         <label for="tel">電話番号</label>
-        <input class="form-control" type="tel" name="tel" id="address" th:value="${session['customer'].tel}">
+        <input class="form-control" type="tel" name="tel" id="address" th:value="${customer.tel}">
       </div>
       <div class="form-group">
         <select name="role" class="form-control">
-          <option value="" th:selected="${session['customer'].role} == null" disabled>選択してください</option>
-          <option value="ROLE_EMPLOYER" th:selected="${session['customer'].role} == 'ROLE_EMPLOYER'">採用担当者</option>
-          <option value="ROLE_SEEKER" th:selected="${session['customer'].role} == 'ROLE_SEEKER'">求職者</option>
+          <option value="" th:selected="${customer.role} == null" disabled>選択してください</option>
+          <option value="ROLE_EMPLOYER" th:selected="${customer.role} == 'ROLE_EMPLOYER'">採用担当者</option>
+          <option value="ROLE_SEEKER" th:selected="${customer.role} == 'ROLE_SEEKER'">求職者</option>
         </select>
       </div>
-      <input class="btn btn-success" type="submit" th:value="${session['customer'].id} == 0 ? '登録' : '編集'">
+      <input class="btn btn-success" type="submit" th:value="${customer.id} == 0 ? '登録' : '編集'">
     </form>
-      <a class="mt-2" th:href="@{/customer/delete(id=${session['customer'].id})}" th:if="${session['customer'].id} != 0" onClick="return confirm('ユーザー情報を削除しても宜しいですか？')">ユーザー情報を削除する</a>
+      <a class="mt-2" th:href="@{/customer/delete(id=${customer.id})}" th:if="${customer.id} != 0" onClick="return confirm('ユーザー情報を削除しても宜しいですか？')">ユーザー情報を削除する</a>
   </section>
 </div>
 </html>

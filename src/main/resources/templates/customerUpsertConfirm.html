@@ -6,29 +6,36 @@
     <table class="table">
       <tr>
         <th>名前</th>
-        <td>[[${session['customer'].name}]]</td>
+        <td>[[${customer.name}]]</td>
       </tr>
       <tr>
         <th>Email</th>
-        <td>[[${session['customer'].email}]]</td>
+        <td>[[${customer.email}]]</td>
       </tr>
       <tr>
         <th>住所</th>
-        <td>[[${session['customer'].address}]]</td>
+        <td>[[${customer.address}]]</td>
       </tr>
       <tr>
         <th>電話番号</th>
-        <td>[[${session['customer'].tel}]]</td>
+        <td>[[${customer.tel}]]</td>
       </tr>
       <tr>
         <th>権限</th>
-        <div th:switch="${session['customer'].role}">
+        <div th:switch="${customer.role}">
           <td th:case="ROLE_EMPLOYER">採用担当者様</td>
           <td th:case="ROLE_SEEKER">求職者様</td>
         </div>
       </tr>
     </table>
     <form th:action="@{/customer/upsert_confirm}" method="post">
+      <input type="hidden" name="id" th:value="${customer.id}">
+      <input type="hidden" name="name" th:value="${customer.name}">
+      <input type="hidden" name="email" th:value="${customer.email}">
+      <input type="hidden" name="password" th:value="${customer.password}">
+      <input type="hidden" name="address" th:value="${customer.address}">
+      <input type="hidden" name="tel" th:value="${customer.tel}">
+      <input type="hidden" name="role" th:value="${customer.role}">
       <input class="btn btn-success" type="submit" name="button" value="戻る">
       <input class="btn btn-success" type="submit" name="button" value="OK">
     </form>

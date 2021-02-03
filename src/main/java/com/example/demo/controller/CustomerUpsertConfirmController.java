@@ -1,13 +1,11 @@
 package com.example.demo.controller;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,27 +28,23 @@ import lombok.RequiredArgsConstructor;
 public class CustomerUpsertConfirmController
 {
     /**
-     * セッションの取得。
-     */
-    private final HttpSession session;
-
-    /**
      * 登録or編集確認画面用Service class。
      */
     private final CustomerUpsertConfirmService service;
 
-    /**
-     * 表示処理を行う。
-     * @param model
-     * @return thymeleafテンプレート。
-     */
-    @GetMapping("/upsert_confirm")
-    public String confirm(Model model)
-    {
-        model.addAttribute("title", "SpringTest:確認画面");
-        model.addAttribute("main", "customerUpsertConfirm::main");
-        return "layout";
-    }
+//    /**
+//     * 表示処理を行う。
+//     * @param model
+//     * @return thymeleafテンプレート。
+//     */
+//    @GetMapping("/upsert_confirm")
+//    public String confirm(@ModelAttribute("customer") CustomerEntity customer, Model model)
+//    {
+//        System.out.println(customer.getId());
+//        model.addAttribute("title", "確認画面");
+//        model.addAttribute("main", "customerUpsertConfirm::main");
+//        return "layout";
+//    }
 
     /**
      * 戻るボタンが押されていた場合は登録or編集画面にリダイレクトする。
@@ -62,16 +56,23 @@ public class CustomerUpsertConfirmController
      * @return リダイレクト処理。
      */
     @PostMapping("/upsert_confirm")
-    public String submit(@RequestParam String button, Model model, RedirectAttributes redirect)
+    public String submit(@RequestParam String button,@ModelAttribute("customer") CustomerEntity customer, Model model, RedirectAttributes redirect)
     {
         if (button.equals("戻る"))
         {
-            return "redirect:/customer/upsert";
+            if (customer.getId() == 0)
+            {
+                model.addAttribute("title", "SpringTest:新規会員登録");
+            }
+            else
+            {
+                model.addAttribute("title", "SpringTest:会員情報編集");
+            }
+            model.addAttribute("main", "customerUpsert::main");
+            return "layout";
         }
 
         //insert(idが0)の場合の処理。
-        CustomerEntity customer = (CustomerEntity) session.getAttribute("customer");
-        session.removeAttribute("customer");
         if (customer.getId() == 0)
         {
             boolean result = service.insert(customer);

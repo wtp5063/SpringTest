@@ -3,37 +3,37 @@
 <div th:fragment="main">
   <section>
   <div class="col-md-6 mx-auto p-5">
-    <h2>求人情報[[${session['job'].id} == 0 ? '登録' : '編集']]</h2>
+    <h2>求人情報[[${job.id} == 0 ? '登録' : '編集']]</h2>
     <form th:action="@{/job/upsert}" method="post" th:object="${job}">
       <ul>
         <li class="list-unstyled" th:each="error:${#fields.detailedErrors()}">
           <span th:text="${error.message}" class="text-danger"></span>
         </li>
       </ul>
-      <input type="hidden" name="id" th:value="${session['job'].id}">
+      <input type="hidden" name="id" th:value="${job.id}">
       <input type="hidden" name="customer_id" th:value="${#authentication.principal.entity.id}">
         <div class="form-group">
           <label for="title">タイトル</label>
-          <input class="form-control" type="text" name="title" id="title" th:value="${session['job'].title}">
+          <input class="form-control" type="text" name="title" id="title" th:value="${job.title}">
         </div>
         <div class="form-group">
           <label for="company">会社名</label>
-          <input class="form-control" type="text" name="company" id="company" th:value="${session['job'].company}">
+          <input class="form-control" type="text" name="company" id="company" th:value="${job.company}">
         </div>
         <div class="form-group">
           <label for="min_salary">給与(最低)</label>
-          <input class="form-control" type="text" name="min_salary" id="min_salary" th:value="${session['job'].min_salary}">
+          <input class="form-control" type="text" name="min_salary" id="min_salary" th:value="${job.min_salary}">
         </div>
         <div class="form-group">
           <label for="max_salary">給与(最高)</label>
-          <input class="form-control" type="text" name="max_salary" id="max_salary" th:value="${session['job'].max_salary}">
+          <input class="form-control" type="text" name="max_salary" id="max_salary" th:value="${job.max_salary}">
         </div>
         <div class="form-group">
           <label for="description">内容</label>
-          <textarea class="form-control" rows="10" name="description" id="description">[[${session['job'].description}]]</textarea>
+          <textarea class="form-control" rows="10" name="description" id="description">[[${job.description}]]</textarea>
         </div>
         <div class="form-group">
-          <input type="submit" th:value="${session['job'].id} == 0 ? '登録' : '編集'" class="btn btn-success">
+          <input type="submit" th:value="${job.id} == 0 ? '登録' : '編集'" class="btn btn-success">
         </div>
     </form>
       </div>

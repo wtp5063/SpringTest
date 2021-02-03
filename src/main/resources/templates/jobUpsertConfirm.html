@@ -6,22 +6,29 @@
     <table class="table">
       <tr>
         <th>タイトル</th>
-        <td>[[${session['job'].title}]]</td>
+        <td>[[${job.title}]]</td>
       </tr>
       <tr>
         <th>会社名</th>
-        <td>[[${session['job'].company}]]</td>
+        <td>[[${job.company}]]</td>
       </tr>
       <tr>
         <th>給与</th>
-        <td>[[${session['job'].min_salary}]]円〜[[${session['job'].max_salary}]]円</td>
+        <td>[[${job.min_salary}]]円〜[[${job.max_salary}]]円</td>
       </tr>
       <tr>
         <th>電話番号</th>
-        <td>[[${session['job'].description}]]</td>
+        <td>[[${job.description}]]</td>
       </tr>
     </table>
     <form th:action="@{/job/upsert_confirm}" method="post">
+      <input type="hidden" name="id" th:value="${job.id}">
+      <input type="hidden" name="customer_id" th:value="${#authentication.principal.entity.id}">
+      <input type="hidden" name="title" th:value="${job.title}">
+      <input type="hidden" name="company" th:value="${job.company}">
+      <input type="hidden" name="description" th:value="${job.description}">
+      <input type="hidden" name="min_salary" th:value="${job.min_salary}">
+      <input type="hidden" name="max_salary" th:value="${job.max_salary}">
       <input class="btn btn-success" type="submit" name="button" value="戻る">
       <input class="btn btn-success" type="submit" name="button" value="OK">
     </form>

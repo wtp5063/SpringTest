@@ -1,7 +1,5 @@
 package com.example.demo.controller;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -36,11 +34,6 @@ public class JobUpsertController
     private final JobUpsertService service;
 
     /**
-     * セッションの取得を行う。
-     */
-    private final HttpSession session;
-
-    /**
      * 表示処理を行う。
      *
      * @param job job(求人情報)テーブルのentity class。
@@ -50,10 +43,6 @@ public class JobUpsertController
     @GetMapping("/upsert")
     public String input(@ModelAttribute("job") JobEntity job, Model model)
     {
-        if (session.getAttribute("job") == null)
-        {
-            session.setAttribute("job", job);
-        }
         if (job.getId() == 0)
         {
             model.addAttribute("title", "新規会員登録");
@@ -69,7 +58,6 @@ public class JobUpsertController
     @PostMapping("/upsert")
     public String submit(@ModelAttribute("job") @Validated(GroupOrder.class) JobEntity job, BindingResult bindingResult, Model model)
     {
-        session.setAttribute("job", job);
         if (bindingResult.hasErrors())
         {
             if (job.getId() == 0)
@@ -83,14 +71,15 @@ public class JobUpsertController
             model.addAttribute("main", "jobUpsert::main");
             return "layout";
         }
-        return "redirect:/job/upsert_confirm";
+        model.addAttribute("title", "確認画面");
+        model.addAttribute("main", "jobUpsertConfirm::main");
+        return "layout";
     }
 
     @GetMapping("/delete")
     public String delete(@RequestParam int id, Model model, RedirectAttributes redirect)
     {
         boolean result = service.deleteById(id);
-        session.removeAttribute("job");
         if (result)
         {
             redirect.addFlashAttribute("msg", "削除に成功しました");

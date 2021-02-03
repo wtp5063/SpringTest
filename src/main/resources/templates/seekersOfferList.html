@@ -24,7 +24,7 @@
           <th>
             <form th:action="@{/seeker/delete}" method="post">
               <input type="hidden" name="id" th:value="${offer.id}">
-              <input type="submit" value="取り消し" onClick="return confirm('応募を取り消しますか？')">
+              <input class="btn btn-success" type="submit" value="取り消し" onClick="return confirm('応募を取り消しますか？')">
             </form>
           </th>
         </tr>
