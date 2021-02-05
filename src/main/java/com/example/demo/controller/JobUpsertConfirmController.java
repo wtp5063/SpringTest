@@ -23,13 +23,6 @@ public class JobUpsertConfirmController
      */
     private final JobUpsertConfirmService service;
 
-//    @GetMapping("/upsert_confirm")
-//    public String confirm(Model model) {
-//        model.addAttribute("title", "確認画面");
-//        model.addAttribute("main", "jobUpsertConfirm::main");
-//        return "layout";
-//    }
-
     @PostMapping("/upsert_confirm")
     public String submit(@RequestParam String button, @ModelAttribute("job") JobEntity job, Model model, RedirectAttributes redirect)
     {

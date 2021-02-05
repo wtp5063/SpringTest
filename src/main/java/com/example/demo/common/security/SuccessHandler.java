@@ -26,7 +26,6 @@ public class SuccessHandler implements AuthenticationSuccessHandler
     {
         Set<String> auth = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
         String role = auth.stream().findFirst().get();
-        System.out.println(role);
         if (role.equals("ROLE_SEEKER"))
         {
             response.sendRedirect("/");
