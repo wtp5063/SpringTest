@@ -13,12 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.example.demo.model.CustomerEntity;
 
 @SpringBootTest
-@EnableWebMvc
 class CustomerDaoImplTest
 {
     @Autowired
