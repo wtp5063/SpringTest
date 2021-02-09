@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import com.example.demo.common.security.EncodeUtil;
 import com.example.demo.model.CustomerEntity;
 
 @SpringBootTest
@@ -62,7 +63,7 @@ class CustomerDaoImplTest
         expected.setTel("0000000000");
         expected.setRole("権限");
         dao.insert(expected);
-        Map<String, Object> map = jdbc.queryForMap("SELECT * FROM customer WHERE name = '名前'");
+        Map<String, Object> map = jdbc.queryForMap("SELECT * FROM customer WHERE name = '名前' AND email = 'email@example.com'");
         CustomerEntity actual = new CustomerEntity();
         actual.setName((String) map.get("name"));
         actual.setEmail((String) map.get("email"));
@@ -70,9 +71,15 @@ class CustomerDaoImplTest
         actual.setAddress((String) map.get("address"));
         actual.setTel((String) map.get("tel"));
         actual.setRole((String) map.get("role"));
-        expected.setPassword(actual.getPassword());
+        assertAll(
+                () -> {assertEquals(expected.getName(), actual.getName());},
+                () -> {assertEquals(expected.getEmail(), actual.getEmail());},
+                () -> {assertTrue(EncodeUtil.passwordEncoder().matches(expected.getPassword(), actual.getPassword()));},
+                () -> {assertEquals(expected.getAddress(), actual.getAddress());},
+                () -> {assertEquals(expected.getTel(), actual.getTel());},
+                () -> {assertEquals(expected.getRole(), actual.getRole());}
+                );
         jdbc.update("DELETE FROM customer WHERE name = '名前'");
-        assertEquals(expected, actual);
     }
 
     @Test
@@ -130,8 +137,14 @@ class CustomerDaoImplTest
         actual.setAddress((String) map.get("address"));
         actual.setRole((String) map.get("role"));
         actual.setTel((String) map.get("tel"));
-        expected.setPassword(actual.getPassword());
-        assertEquals(expected, actual);
+        assertAll(
+                () -> {assertEquals(expected.getName(), actual.getName());},
+                () -> {assertEquals(expected.getEmail(), actual.getEmail());},
+                () -> {assertTrue(EncodeUtil.passwordEncoder().matches(expected.getPassword(), actual.getPassword()));},
+                () -> {assertEquals(expected.getAddress(), actual.getAddress());},
+                () -> {assertEquals(expected.getTel(), actual.getTel());},
+                () -> {assertEquals(expected.getRole(), actual.getRole());}
+                );
     }
 
     @Test

@@ -28,11 +28,11 @@ public class SuccessHandler implements AuthenticationSuccessHandler
         String role = auth.stream().findFirst().get();
         if (role.equals("ROLE_SEEKER"))
         {
-            response.sendRedirect("/");
+            response.sendRedirect("/spring_test/");
         }
         else
         {
-            response.sendRedirect("/employer");
+            response.sendRedirect("/spring_test/employer");
         }
     }
 

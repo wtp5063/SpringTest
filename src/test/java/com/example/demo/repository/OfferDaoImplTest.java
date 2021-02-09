@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -75,6 +77,11 @@ class OfferDaoImplTest
         expected.setCustomer_id(10001);
         expected.setJob_id(999);
         assertEquals(expected, actual);
+        Timestamp ts = (Timestamp) map.get("datetime");
+        LocalDateTime ldt = ts.toLocalDateTime();
+        LocalDate actualDate = ldt.toLocalDate();
+        LocalDate expectedDate = LocalDate.now();
+        assertEquals(expectedDate, actualDate);
         jdbc.update("DELETE FROM customer WHERE id = 10001");
     }
 
