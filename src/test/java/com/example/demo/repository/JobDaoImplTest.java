@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.example.demo.model.JobEntity;
@@ -71,19 +72,14 @@ class JobDaoImplTest
         expected.setMin_salary("1000");
         expected.setMax_salary("2000");
         dao.insert(expected);
-        Map<String, Object> map = jdbc.queryForMap("SELECT * FROM job WHERE title = 'タイトル' AND description = '内容'");
-        JobEntity actual = new JobEntity();
-        actual.setCustomer_id((int) map.get("customer_id"));
-        actual.setTitle((String) map.get("title"));
-        actual.setCompany((String) map.get("company"));
-        actual.setDescription((String) map.get("description"));
-        actual.setMin_salary(String.valueOf(map.get("min_salary")));
-        actual.setMax_salary(String.valueOf(map.get("max_salary")));
-        assertEquals(expected, actual);
-        Timestamp ts = (Timestamp) map.get("datetime");
+        JobEntity actual = jdbc.queryForObject("SELECT * FROM job WHERE title = 'タイトル' AND description = '内容'", new BeanPropertyRowMapper<JobEntity>(JobEntity.class));
+        Timestamp ts = (Timestamp) actual.getDatetime();
         LocalDateTime ldt = ts.toLocalDateTime();
         LocalDate actualDate = ldt.toLocalDate();
         LocalDate expectedDate = LocalDate.now();
+        actual.setId(0);
+        actual.setDatetime(null);
+        assertEquals(expected, actual);
         assertEquals(expectedDate, actualDate);
         jdbc.update("DELETE FROM job WHERE title = 'タイトル' AND description = '内容'");
     }
@@ -156,25 +152,20 @@ class JobDaoImplTest
     {
         JobEntity expected = new JobEntity();
         expected.setId(999);
+        expected.setCustomer_id(9999);
         expected.setTitle("update");
         expected.setCompany("update.co");
         expected.setDescription("アップデート");
         expected.setMin_salary("3000");
         expected.setMax_salary("5000");
         dao.updateById(expected);
-        Map<String, Object> map = jdbc.queryForMap("SELECT * FROM job WHERE id = 999");
-        JobEntity actual = new JobEntity();
-        actual.setId((int) map.get("id"));
-        actual.setTitle((String) map.get("title"));
-        actual.setCompany((String) map.get("company"));
-        actual.setDescription((String) map.get("description"));
-        actual.setMin_salary(String.valueOf(map.get("min_salary")));
-        actual.setMax_salary(String.valueOf(map.get("max_salary")));
-        assertEquals(expected, actual);
-        Timestamp ts = (Timestamp) map.get("datetime");
+        JobEntity actual = jdbc.queryForObject("SELECT * FROM job WHERE id = 999", new BeanPropertyRowMapper<JobEntity>(JobEntity.class));
+        Timestamp ts = (Timestamp) actual.getDatetime();
         LocalDateTime ldt = ts.toLocalDateTime();
         LocalDate actualDate = ldt.toLocalDate();
         LocalDate expectedDate = LocalDate.now();
+        actual.setDatetime(null);
+        assertEquals(expected, actual);
         assertEquals(expectedDate, actualDate);
     }
 
@@ -183,11 +174,10 @@ class JobDaoImplTest
     {
         jdbc.update("INSERT INTO job(id, customer_id, title, company, description, min_salary, max_salary) VALUES(1000, 9999, 'delete', 'delete.co', '削除', '7000', '8000')");
         dao.deleteById(1000);
-        String actual;
+        JobEntity actual;
         try
         {
-            Map<String, Object> map = jdbc.queryForMap("SELECT * FROM job WHERE id = 1000");
-            actual = (String) map.get("id");
+            actual = jdbc.queryForObject("SELECT * FROM job WHERE id = 1000",new BeanPropertyRowMapper<JobEntity>(JobEntity.class));
         }
         catch (EmptyResultDataAccessException e)
         {
@@ -216,5 +206,21 @@ class JobDaoImplTest
         actual = dao.search("falseです");
         expected = new ArrayList<>();
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void test() throws ParseException {
+       JobEntity actual = jdbc.queryForObject("SELECT * FROM job WHERE id = 999", new BeanPropertyRowMapper<JobEntity>(JobEntity.class));
+       JobEntity expected = new JobEntity();
+       expected.setId(999);
+       expected.setCustomer_id(9999);
+       expected.setTitle("test");
+       expected.setCompany("テスト株式会社");
+       Timestamp ts = new Timestamp(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2021-02-02 11:18:48.0").getTime());
+       expected.setDatetime(ts);
+       expected.setDescription("テストです");
+       expected.setMin_salary("10000");
+       expected.setMax_salary("20000");
+       assertEquals(expected, actual);
     }
 }

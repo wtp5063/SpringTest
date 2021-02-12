@@ -2,8 +2,6 @@ package com.example.demo.repository;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.Map;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -12,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.example.demo.common.security.EncodeUtil;
@@ -63,14 +62,7 @@ class CustomerDaoImplTest
         expected.setTel("0000000000");
         expected.setRole("権限");
         dao.insert(expected);
-        Map<String, Object> map = jdbc.queryForMap("SELECT * FROM customer WHERE name = '名前' AND email = 'email@example.com'");
-        CustomerEntity actual = new CustomerEntity();
-        actual.setName((String) map.get("name"));
-        actual.setEmail((String) map.get("email"));
-        actual.setPassword((String) map.get("password"));
-        actual.setAddress((String) map.get("address"));
-        actual.setTel((String) map.get("tel"));
-        actual.setRole((String) map.get("role"));
+        CustomerEntity actual = jdbc.queryForObject("SELECT * FROM customer WHERE name = '名前' AND email = 'email@example.com'", new BeanPropertyRowMapper<CustomerEntity>(CustomerEntity.class));
         assertAll(
                 () -> {assertEquals(expected.getName(), actual.getName());},
                 () -> {assertEquals(expected.getEmail(), actual.getEmail());},
@@ -128,15 +120,7 @@ class CustomerDaoImplTest
         expected.setRole("ROLE_UPDATE");
         expected.setTel("6677778888");
         dao.updateById(expected);
-        Map<String, Object> map = jdbc.queryForMap("SELECT * FROM customer WHERE id = 999");
-        CustomerEntity actual = new CustomerEntity();
-        actual.setId((int) map.get("id"));
-        actual.setName((String) map.get("name"));
-        actual.setEmail((String) map.get("email"));
-        actual.setPassword((String) map.get("password"));
-        actual.setAddress((String) map.get("address"));
-        actual.setRole((String) map.get("role"));
-        actual.setTel((String) map.get("tel"));
+        CustomerEntity actual = jdbc.queryForObject("SELECT * FROM customer WHERE id = 999", new BeanPropertyRowMapper<CustomerEntity>(CustomerEntity.class));
         assertAll(
                 () -> {assertEquals(expected.getName(), actual.getName());},
                 () -> {assertEquals(expected.getEmail(), actual.getEmail());},
@@ -152,11 +136,10 @@ class CustomerDaoImplTest
     {
         jdbc.update("INSERT INTO customer VALUES (1000, 'delete', 'delete@example.com', '44444444', '削除市', 'ROLE_DELETE', '3344445555')");
         dao.deleteById(1000);
-        String actual;
+        CustomerEntity actual;
         try
         {
-            Map<String, Object> map = jdbc.queryForMap("SELECT * FROM customer WHERE id = 1000");
-            actual = (String) map.get("name");
+            actual = jdbc.queryForObject("SELECT * FROM customer WHERE id = 1000", new BeanPropertyRowMapper<CustomerEntity>(CustomerEntity.class));
         }
         catch (EmptyResultDataAccessException e)
         {

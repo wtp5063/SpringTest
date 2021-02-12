@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.example.demo.model.EmployersOfferListDto;
@@ -69,18 +70,17 @@ class OfferDaoImplTest
     {
         jdbc.update("INSERT INTO customer (id) VALUES (10001)");
         dao.insert(10001, 999);
-        Map<String, Object> map = jdbc.queryForMap("SELECT * FROM offer WHERE customer_id = 10001");
-        OfferEntity actual = new OfferEntity();
-        actual.setCustomer_id((int) map.get("customer_id"));
-        actual.setJob_id((int) map.get("job_id"));
+        OfferEntity actual = jdbc.queryForObject("SELECT * FROM offer WHERE customer_id = 10001", new BeanPropertyRowMapper<OfferEntity>(OfferEntity.class));
         OfferEntity expected = new OfferEntity();
         expected.setCustomer_id(10001);
         expected.setJob_id(999);
-        assertEquals(expected, actual);
-        Timestamp ts = (Timestamp) map.get("datetime");
+        Timestamp ts = actual.getDatetime();
         LocalDateTime ldt = ts.toLocalDateTime();
         LocalDate actualDate = ldt.toLocalDate();
         LocalDate expectedDate = LocalDate.now();
+        actual.setId(0);
+        actual.setDatetime(null);
+        assertEquals(expected, actual);
         assertEquals(expectedDate, actualDate);
         jdbc.update("DELETE FROM customer WHERE id = 10001");
     }
