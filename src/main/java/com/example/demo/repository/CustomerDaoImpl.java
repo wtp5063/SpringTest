@@ -36,9 +36,16 @@ public class CustomerDaoImpl implements CustomerDao
     @Override
     public boolean insert(CustomerEntity entity) throws DataAccessException
     {
-        String password = EncodeUtil.passwordEncoder().encode(entity.getPassword());
-        int rowNum = jdbc.update("INSERT INTO customer (name, email, password, address, tel, role) VALUES(?, ?, ?, ?, ?, ?)", entity.getName(), entity.getEmail(), password, entity.getAddress(), entity.getTel(), entity.getRole());
-        return rowNum > 0;
+        try
+        {
+            String password = EncodeUtil.passwordEncoder().encode(entity.getPassword());
+            jdbc.update("INSERT INTO customer (name, email, password, address, tel, role) VALUES(?, ?, ?, ?, ?, ?)", entity.getName(), entity.getEmail(), password, entity.getAddress(), entity.getTel(), entity.getRole());
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
     }
 
     /**
@@ -121,8 +128,8 @@ public class CustomerDaoImpl implements CustomerDao
     @Override
     public boolean deleteById(int id) throws DataAccessException
     {
-        int rowNum = jdbc.update("DELETE FROM customer WHERE id = ?", id);
-        return rowNum > 0;
+           int rowNum = jdbc.update("DELETE FROM customer WHERE id = ?", id);
+            return rowNum > 0;
     }
 
 }

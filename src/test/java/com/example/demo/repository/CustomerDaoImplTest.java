@@ -61,7 +61,7 @@ class CustomerDaoImplTest
         expected.setAddress("住所");
         expected.setTel("0000000000");
         expected.setRole("権限");
-        dao.insert(expected);
+        boolean actualRetValue = dao.insert(expected);
         CustomerEntity actual = jdbc.queryForObject("SELECT * FROM customer WHERE name = '名前' AND email = 'email@example.com'", new BeanPropertyRowMapper<CustomerEntity>(CustomerEntity.class));
         assertAll(
                 () -> {assertEquals(expected.getName(), actual.getName());},
@@ -71,6 +71,10 @@ class CustomerDaoImplTest
                 () -> {assertEquals(expected.getTel(), actual.getTel());},
                 () -> {assertEquals(expected.getRole(), actual.getRole());}
                 );
+        assertTrue(actualRetValue);
+        CustomerEntity entity = new CustomerEntity();
+        actualRetValue = dao.insert(entity);
+        assertFalse(actualRetValue);
         jdbc.update("DELETE FROM customer WHERE name = '名前'");
     }
 
@@ -119,7 +123,8 @@ class CustomerDaoImplTest
         expected.setAddress("更新市");
         expected.setRole("ROLE_UPDATE");
         expected.setTel("6677778888");
-        dao.updateById(expected);
+        boolean actualRetValue = dao.updateById(expected);
+        assertTrue(actualRetValue);
         CustomerEntity actual = jdbc.queryForObject("SELECT * FROM customer WHERE id = 999", new BeanPropertyRowMapper<CustomerEntity>(CustomerEntity.class));
         assertAll(
                 () -> {assertEquals(expected.getName(), actual.getName());},
@@ -129,13 +134,19 @@ class CustomerDaoImplTest
                 () -> {assertEquals(expected.getTel(), actual.getTel());},
                 () -> {assertEquals(expected.getRole(), actual.getRole());}
                 );
+        expected.setId(5000);
+        actualRetValue = dao.updateById(expected);
+        assertFalse(actualRetValue);
     }
 
     @Test
     void testDeleteById()
     {
         jdbc.update("INSERT INTO customer VALUES (1000, 'delete', 'delete@example.com', '44444444', '削除市', 'ROLE_DELETE', '3344445555')");
-        dao.deleteById(1000);
+        boolean actualRetValue = dao.deleteById(1000);
+        assertTrue(actualRetValue);
+        actualRetValue = dao.deleteById(5000);
+        assertFalse(actualRetValue);
         CustomerEntity actual;
         try
         {

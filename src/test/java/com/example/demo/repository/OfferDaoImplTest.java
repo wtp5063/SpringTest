@@ -68,7 +68,7 @@ class OfferDaoImplTest
     @Test
     void testInsert()
     {
-        jdbc.update("INSERT INTO customer (id) VALUES (10001)");
+        jdbc.update("INSERT INTO customer (id, email, password) VALUES (10001, 'example@example.com', 'aaaaaaaa')");
         dao.insert(10001, 999);
         OfferEntity actual = jdbc.queryForObject("SELECT * FROM offer WHERE customer_id = 10001", new BeanPropertyRowMapper<OfferEntity>(OfferEntity.class));
         OfferEntity expected = new OfferEntity();

@@ -32,20 +32,6 @@ public class CustomerUpsertConfirmController
      */
     private final CustomerUpsertConfirmService service;
 
-//    /**
-//     * 表示処理を行う。
-//     * @param model
-//     * @return thymeleafテンプレート。
-//     */
-//    @GetMapping("/upsert_confirm")
-//    public String confirm(@ModelAttribute("customer") CustomerEntity customer, Model model)
-//    {
-//        System.out.println(customer.getId());
-//        model.addAttribute("title", "確認画面");
-//        model.addAttribute("main", "customerUpsertConfirm::main");
-//        return "layout";
-//    }
-
     /**
      * 戻るボタンが押されていた場合は登録or編集画面にリダイレクトする。
      * それ以外の場合でセッションから取り出したインスタンスに格納されたidが
