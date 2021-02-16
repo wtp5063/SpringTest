@@ -101,7 +101,7 @@ class OfferDaoImplTest
         dto.setDatetime(ts);
         expected.add(dto);
         assertEquals(expected, actual);
-        actual = dao.findByCustomerIdEmployer(0);
+        actual = dao.findByCustomerIdEmployer(5000);
         expected = new ArrayList<>();
         assertEquals(expected, actual);
     }
@@ -120,6 +120,9 @@ class OfferDaoImplTest
         Timestamp ts = new Timestamp(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2021-02-02 11:11:11").getTime());
         dto.setDatetime(ts);
         expected.add(dto);
+        assertEquals(expected, actual);
+        actual = dao.findByCustomerIdSeeker(5000);
+        expected = new ArrayList<>();
         assertEquals(expected, actual);
     }
 

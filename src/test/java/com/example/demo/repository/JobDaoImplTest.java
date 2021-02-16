@@ -71,7 +71,13 @@ class JobDaoImplTest
         expected.setDescription("内容");
         expected.setMin_salary("1000");
         expected.setMax_salary("2000");
-        dao.insert(expected);
+
+        boolean actualRetValue = dao.insert(expected);
+        assertTrue(actualRetValue);
+        JobEntity entity = new JobEntity();
+        actualRetValue = dao.insert(entity);
+        assertFalse(actualRetValue);
+
         JobEntity actual = jdbc.queryForObject("SELECT * FROM job WHERE title = 'タイトル' AND description = '内容'", new BeanPropertyRowMapper<JobEntity>(JobEntity.class));
         Timestamp ts = (Timestamp) actual.getDatetime();
         LocalDateTime ldt = ts.toLocalDateTime();
@@ -81,6 +87,7 @@ class JobDaoImplTest
         actual.setDatetime(null);
         assertEquals(expected, actual);
         assertEquals(expectedDate, actualDate);
+
         jdbc.update("DELETE FROM job WHERE title = 'タイトル' AND description = '内容'");
     }
 
@@ -158,7 +165,10 @@ class JobDaoImplTest
         expected.setDescription("アップデート");
         expected.setMin_salary("3000");
         expected.setMax_salary("5000");
-        dao.updateById(expected);
+
+        boolean actualRetValue = dao.updateById(expected);
+        assertTrue(actualRetValue);
+
         JobEntity actual = jdbc.queryForObject("SELECT * FROM job WHERE id = 999", new BeanPropertyRowMapper<JobEntity>(JobEntity.class));
         Timestamp ts = (Timestamp) actual.getDatetime();
         LocalDateTime ldt = ts.toLocalDateTime();
@@ -167,13 +177,20 @@ class JobDaoImplTest
         actual.setDatetime(null);
         assertEquals(expected, actual);
         assertEquals(expectedDate, actualDate);
+        expected.setId(5000);
+        actualRetValue = dao.updateById(expected);
+        assertFalse(actualRetValue);
     }
 
     @Test
     void testDeleteById()
     {
         jdbc.update("INSERT INTO job(id, customer_id, title, company, description, min_salary, max_salary) VALUES(1000, 9999, 'delete', 'delete.co', '削除', '7000', '8000')");
-        dao.deleteById(1000);
+        boolean actualRetValue = dao.deleteById(1000);
+        assertTrue(actualRetValue);
+        actualRetValue = dao.deleteById(5000);
+        assertFalse(actualRetValue);
+
         JobEntity actual;
         try
         {

@@ -38,9 +38,16 @@ public class JobDaoImpl implements JobDao
     @Override
     public boolean insert(JobEntity entity) throws DataAccessException
     {
-        int rowNum = jdbc.update("INSERT INTO job (customer_id, title, company, description, min_salary, max_salary) VALUES(?, ?, ?, ?, ?, ?)", entity.getCustomer_id(), entity.getTitle(), entity.getCompany(), entity.getDescription(),
-                entity.getMin_salary(), entity.getMax_salary());
-        return rowNum > 0;
+        try
+        {
+            jdbc.update("INSERT INTO job (customer_id, title, company, description, min_salary, max_salary) VALUES(?, ?, ?, ?, ?, ?)", entity.getCustomer_id(), entity.getTitle(), entity.getCompany(), entity.getDescription(),
+                    entity.getMin_salary(), entity.getMax_salary());
+            return true;
+        }
+        catch (DataAccessException e)
+        {
+            return false;
+        }
     }
 
     /**
@@ -74,7 +81,6 @@ public class JobDaoImpl implements JobDao
         {
             return null;
         }
-
     }
 
     /**
@@ -170,6 +176,7 @@ public class JobDaoImpl implements JobDao
 
     /**
      * 受け取ったvalueと一致するデータを取得し、Entityに格納後Listにして返す。
+     *
      * @param value 入力された文字列。
      * @return 成功時：jobテーブルのEntity classのList、失敗時：null。
      */
